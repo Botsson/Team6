@@ -25,18 +25,6 @@ void setup() {
   button.waitForButton();
   pinMode(13, OUTPUT);
   lightsOn();
-  delay(1000);
-  int i;
-  for(i = 0; i < 80; i++)
-  {
-    if ((i > 10 && i <= 30) || (i > 50 && i <= 70))
-      motors.setSpeeds(-200, 200);
-    else
-      motors.setSpeeds(200, -200);
-    reflectanceSensors.calibrate();
-    delay(20);
-  }
-
   motors.setSpeeds(0,0);
 }
 
@@ -52,10 +40,11 @@ int getDirection() {
 void loop() {
   count++;
 
-if(count >= 2600)
-{
-  motors.setSpeeds(700, 700);
-}
+  if(count >= 2400) {
+    motors.setSpeeds(700, 700);
+  } else if (count <= 15) {
+    reflectanceSensors.calibrate();
+  }
   
   int lineDirection = getDirection();
   int m1Speed = MAX_SPEED + lineDirection;
@@ -68,13 +57,8 @@ if(count >= 2600)
     m1Speed = MAX_SPEED;
   if (m2Speed > MAX_SPEED)
     m2Speed = MAX_SPEED;
-
-//  if (m1Speed == 0 && m2Speed == MAX_SPEED)
-//  {
-//    motors.setSpeeds(500, 500);
-//  } else if (m2Speed == 0 && m1Speed == MAX_SPEED) {
-//    motors.setSpeeds(500, 500);
-//  } else 
-    motors.setSpeeds(m1Speed, m2Speed);
+    
+   motors.setSpeeds(m1Speed, m2Speed);
 }
+
 
