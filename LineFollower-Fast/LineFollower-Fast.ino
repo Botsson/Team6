@@ -10,7 +10,7 @@ Pushbutton button(ZUMO_BUTTON);
 int lastError = 0;
 int count = 0;
 
-const int MAX_SPEED = 500;
+int MAX_SPEED = 300;
 
 void lightsOn() {
   digitalWrite(13, HIGH);
@@ -40,10 +40,14 @@ int getDirection() {
 void loop() {
   count++;
 
-  if(count >= 2400) {
+  if(count >= 2600) {
     motors.setSpeeds(700, 700);
-  } else if (count <= 15) {
+  } else if (count <= 10) {
     reflectanceSensors.calibrate();
+  }
+
+  if (count > 800) {
+    MAX_SPEED = 500;
   }
   
   int lineDirection = getDirection();
